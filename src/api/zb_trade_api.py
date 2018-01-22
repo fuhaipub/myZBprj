@@ -76,6 +76,7 @@ class zb_trade_api:
     def zb_get_account(self):
         '''
         获取用户信息
+
         :return:
         //# Response
         {
@@ -130,6 +131,7 @@ class zb_trade_api:
 
     def zb_get_Order(self, id, currency):
         '''
+        获得委托挂单信息
 
         :param id:委托挂单号
         :param currency:btc_usdt,bcc_usdt,ubtc_usdt,ltc_usdt,...
@@ -171,6 +173,7 @@ class zb_trade_api:
     def zb_get_Orders(self, currency, tradeType, pageIndex = 1):
         '''
         获取多个委托买单或卖单，每次请求返回10条记录
+
         :param currency:btc_usdt,bcc_usdt,ubtc_usdt,ltc_usdt,...
         :param tradeType: 交易类型1/0[buy/sell]
         :param pageIndex: 当前页数
@@ -213,7 +216,8 @@ class zb_trade_api:
 
     def zb_get_OrdersNew(self, currency, tradeType, pageIndex = 1, pageSize=50):
         '''
-        获取多个委托买单或卖单，每次请求返回10条记录
+        (新)获取多个委托买单或卖单，每次请求返回pageSize<100条记录
+
         :param currency:btc_usdt,bcc_usdt,ubtc_usdt,ltc_usdt,...
         :param tradeType: 交易类型1/0[buy/sell]
         :param pageIndex: 当前页数
@@ -256,6 +260,8 @@ class zb_trade_api:
     #未测试
     def zb_get_OrdersIgnoreTradeType(self, currency, pageIndex = 1, pageSize=50):
         '''
+        与getOrdersNew的区别是取消tradeType字段过滤，可同时获取买单和卖单，每次请求返回pageSize<100条记录
+
         :param currency:btc_usdt,bcc_usdt,ubtc_usdt,ltc_usdt,eth_usdt,etc_usdt,bts_usdt,
         :param pageIndex:当前页数
         :param pageSize:每页数量
@@ -303,6 +309,7 @@ class zb_trade_api:
     def zb_get_UnfinishedOrdersIgnoreTradeType(self, currency, pageIndex = 1, pageSize =10):
         '''
         获取未成交或部份成交的买单和卖单，每次请求返回pageSize<=10条记录
+
         :param currency:btc_usdt,bcc_usdt,ubtc_usdt,ltc_usdt,eth_usdt,etc_usdt,bts_usdt,
         :param pageIndex:当前页数
         :param pageSize:每页数量
@@ -378,6 +385,7 @@ class zb_trade_api:
     def zb_get_UserWithdrawAddress(self,currency):
         '''
         获取用户认证的提现地址
+
         :param currency:
         :return:
         //# Request
@@ -408,6 +416,7 @@ class zb_trade_api:
     def zb_get_WithdrawRecord(self, currency, pageIndex = 1, pageSize =10):
         '''
         获取数字资产提现记录
+
         :param currency:
         :return:
         //# Request
@@ -460,7 +469,8 @@ class zb_trade_api:
     #未测试
     def zb_get_ChargeRecord(self, currency, pageIndex = 1, pageSize =10):
         '''
-        获取数字资产提现记录
+        获取数字资产充值记录
+
         :param currency:
         :return:
         //# Request
@@ -519,7 +529,8 @@ class zb_trade_api:
     #未测试
     def zb_get_withdraw(self, currency, amount, receiveAddr,safePwd, pageIndex = 1, pageSize =10):
         '''
-        获取数字资产提现记录
+        提现
+
         :param currency:
         amount:提现金额(最多小数点后8位数)
         receiveAddr:接收地址（必须是认证了的地址，bts的话，以"账户_备注"这样的格式）

@@ -6,6 +6,7 @@ import yaml
 import sys
 import urllib2
 import zb_error
+import utils
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -56,6 +57,7 @@ class zb_api:
     def zb_get_ticker(self, marketType ):
         """
         返回一种币种的行情
+
         http://api.zb.com/data/v1/ticker?market=btc_usdt
         market范围:
         btc_usdt,bcc_usdt,ubtc_usdt,ltc_usdt,eth_usdt,etc_usdt,bts_usdt,eos_usdt,qtum_usdt,hsr_usdt,xrp_usdt
@@ -97,6 +99,8 @@ class zb_api:
 
     def zb_get_depth(self, marketType , size= 50):
         """
+        市场深度,参数:币种,竞卖asks和竞买bids的个数,最多是50个
+
         http://api.zb.com/data/v1/depth?market=btc_usdt&size=3   市场深度,参数:币种,竞卖asks和竞买bids的个数,最多是50个
         //# Response
         {
@@ -144,6 +148,7 @@ class zb_api:
     def zb_get_trades(self, marketType):
         """
         历史成交
+
         http://api.zb.com/data/v1/trades?market=btc_usdt
 
         //# Response
@@ -182,9 +187,11 @@ if __name__ == '__main__':
     #print zbapi.zb_get_depth("eos_usdt",3)
     #print zbapi.zb_get_trades("eos_usdt")
     while True:
+
         eos = zbapi.zb_get_ticker("eos_usdt")
         import time
         print eos
+        if eos.has_key("ticker") == False : continue
         print "Date:%s   买:%.4f  卖:%.4f    最新成交:%.4f     最高位:%.4f      最低位:%.4f    成交量:%.1f " % (
 
                       time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
@@ -195,6 +202,8 @@ if __name__ == '__main__':
                       float(eos["ticker"]["low"]) * 6.7,
                       float(eos["ticker"]["vol"]) * 6.7
         )
+
+        if float(eos["ticker"]["last"]) * 6.7 < 95 : utils.mac_notify("Eos 交易价格已经小于 95元")
 
         time.sleep (2)
 
