@@ -180,6 +180,22 @@ if __name__ == '__main__':
     #print zbapi.zb_get_ticker("eos_usdt")
     #print zbapi.zb_get_depth("eos_usdt",3)
     #print zbapi.zb_get_trades("eos_usdt")
+    while True:
+        eos = zbapi.zb_get_ticker("eos_usdt")
+        import time
+        print "Date:%s   买:%.4f  卖:%.4f    最新成交:%.4f     最高位:%.4f      最低位:%.4f    成交量:%.1f " % (
+
+                      time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
+                      float(eos["ticker"]["buy"]) * 6.7,
+                      float(eos["ticker"]["sell"]) * 6.7,
+                      float(eos["ticker"]["last"]) * 6.7,
+                      float(eos["ticker"]["high"]) * 6.7,
+                      float(eos["ticker"]["low"]) * 6.7,
+                      float(eos["ticker"]["vol"]) * 6.7
+        )
+
+        time.sleep (2)
+
 
 
 
@@ -194,4 +210,13 @@ if __name__ == '__main__':
 
     >>> print json.dumps(js, ensure_ascii=False)
     {"haha": "哈哈"}
+
+
+
+      eos["ticker"]["buy"] * 6.7,
+      eos["ticker"]["sell"] * 6.7,
+      eos["ticker"]["last"] * 6.7,
+      eos["ticker"]["high"] * 6.7,
+      eos["ticker"]["low"] * 6.7,
+      eos["ticker"]["vol"] * 6.7
     """

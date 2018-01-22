@@ -73,8 +73,6 @@ class zb_trade_api:
             return {"error": "Request zb_api failed, URL:"+url + " Exception:"+ str(ex) }
 
 
-
-
     def zb_get_account(self):
         '''
         获取用户信息
@@ -256,6 +254,50 @@ class zb_trade_api:
         return self.__api_call("getOrdersNew", params=__params)
 
 
+    def zb_get_OrdersIgnoreTradeType(self, currency, pageIndex = 1, pageSize=50):
+        '''
+        :param currency:btc_usdt,bcc_usdt,ubtc_usdt,ltc_usdt,eth_usdt,etc_usdt,bts_usdt,
+        :param pageIndex:当前页数
+        :param pageSize:每页数量
+        :return:
+        //# Request
+            GET https://trade.zb.com/api/getOrdersIgnoreTradeType?accesskey=youraccesskey&currency=ltc_btc
+            &method=getOrdersIgnoreTradeType&pageIndex=1&pageSize=1
+            &sign=请求加密签名串&reqTime=当前时间毫秒数
+            //# Response
+            [
+                {
+                    "currency": "btc",
+                    "id": "20150928158614292",
+                    "price": 1560,
+                    "status": 3,
+                    "total_amount": 0.1,
+                    "trade_amount": 0,
+                    "trade_price" : 6000,
+                    "trade_date": 1443410396717,
+                    "trade_money": 0,
+                    "type": 0
+                }...
+            ]
+
+            currency : 交易类型
+            id : 委托挂单号
+            price : 单价
+            status : 挂单状态(0：待成交,1：取消,2：交易完成,3：待成交未交易部份)
+            total_amount : 挂单总数量
+            trade_amount : 已成交数量
+            trade_date : 委托时间
+            trade_money : 已成交总金额
+            trade_price : 成交均价
+            type : 挂单类型 1/0[buy/sell]
+        '''
+        __params =  "accesskey="+self.mykey +\
+            "&currency="+ currency +\
+            "&method=getOrdersIgnoreTradeType" +\
+            "&pageIndex="+ str(pageIndex)  +\
+            "&pageSize="+ str(pageSize)
+
+        return self.__api_call("getOrdersIgnoreTradeType", params=__params)
 
 if __name__ == '__main__':
 
@@ -274,3 +316,4 @@ if __name__ == '__main__':
 
     print api.zb_get_OrdersNew("eos_usdt", zb_trade_api.TradeType_BUY , pageIndex= 1)
     print api.zb_get_OrdersNew("eos_usdt", zb_trade_api.TradeType_SELL , pageIndex= 1)
+    print api.zb_get_OrdersIgnoreTradeType("eos_usdt" , pageIndex= 1)
