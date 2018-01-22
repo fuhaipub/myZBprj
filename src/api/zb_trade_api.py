@@ -2,7 +2,7 @@
 
 import json, urllib2, hashlib,struct,sha,time,sys
 import yaml
-
+import zb_error
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -253,7 +253,7 @@ class zb_trade_api:
 
         return self.__api_call("getOrdersNew", params=__params)
 
-
+    #未测试
     def zb_get_OrdersIgnoreTradeType(self, currency, pageIndex = 1, pageSize=50):
         '''
         :param currency:btc_usdt,bcc_usdt,ubtc_usdt,ltc_usdt,eth_usdt,etc_usdt,bts_usdt,
@@ -299,6 +299,263 @@ class zb_trade_api:
 
         return self.__api_call("getOrdersIgnoreTradeType", params=__params)
 
+    #未测试
+    def zb_get_UnfinishedOrdersIgnoreTradeType(self, currency, pageIndex = 1, pageSize =10):
+        '''
+        获取未成交或部份成交的买单和卖单，每次请求返回pageSize<=10条记录
+        :param currency:btc_usdt,bcc_usdt,ubtc_usdt,ltc_usdt,eth_usdt,etc_usdt,bts_usdt,
+        :param pageIndex:当前页数
+        :param pageSize:每页数量
+        :return:
+        //# Request
+        GET https://trade.zb.com/api/getUnfinishedOrdersIgnoreTradeType?accesskey=youraccesskey
+        &currency=ltc_btc&method=getUnfinishedOrdersIgnoreTradeType&pageIndex=1&pageSize=10
+            &sign=请求加密签名串&reqTime=当前时间毫秒数
+        //# Response
+        [
+            {
+                "currency": "btc",
+                "id": "20150928158614292",
+                "price": 1560,
+                "status": 3,
+                "total_amount": 0.1,
+                "trade_amount": 0,
+                "trade_price" : 6000,
+                "trade_date": 1443410396717,
+                "trade_money": 0,
+                "type": 0
+            }...
+        ]
+        currency : 交易类型
+        id : 委托挂单号
+        price : 单价
+        status : 挂单状态(0：待成交,1：取消,2：交易完成,3：待成交未交易部份)
+        total_amount : 挂单总数量
+        trade_amount : 已成交数量
+        trade_date : 委托时间
+        trade_money : 已成交总金额
+        trade_price : 成交均价
+        type : 挂单类型 1/0[buy/sell]
+        '''
+        __params =  "accesskey="+self.mykey +\
+            "&currency="+ currency +\
+            "&method=order" +\
+            "&pageIndex="+ str(pageIndex)  +\
+            "&pageSize="+ str(pageSize)
+
+        return self.__api_call("getUnfinishedOrdersIgnoreTradeType", params=__params)
+
+    #未测试
+    def zb_get_UserAddress(self, currency ):
+        '''获取用户充值地址
+
+        :param currency:
+        :return:
+        //# Request
+        GET https://trade.zb.com/api/getUserAddress?accesskey=youraccesskey
+        &currency=btc&method=getUserAddress
+            &sign=请求加密签名串&reqTime=当前时间毫秒数
+        //# Response
+        {
+            "code": 1000,
+            "message": {
+                "des": "success",
+                "isSuc": true,
+                "datas": {
+                    "key": "0x0af7f36b8f09410f3df62c81e5846da673d4d9a9"
+                }
+            }
+        }
+        key : 地址
+        '''
+        __params =  "accesskey="+self.mykey +\
+            "&currency="+ currency +\
+            "&method=getUserAddress"
+
+        return self.__api_call("getUserAddress", params=__params)
+
+    #未测试
+    def zb_get_UserWithdrawAddress(self,currency):
+        '''
+        获取用户认证的提现地址
+        :param currency:
+        :return:
+        //# Request
+        GET https://trade.zb.com/api/getWithdrawAddress?accesskey=youraccesskey
+        &currency=etc&method=getWithdrawAddress
+            &sign=请求加密签名串&reqTime=当前时间毫秒数
+        //# Response
+        {
+            "code": 1000,
+            "message": {
+                "des": "success",
+                "isSuc": true,
+                "datas": {
+                    "key": "0x0af7f36b8f09410f3df62c81e5846da673d4d9a9"
+                }
+            }
+        }
+            key : 地址
+        '''
+        __params =  "accesskey="+self.mykey +\
+            "&currency="+ currency +\
+            "&method=getWithdrawAddress"
+
+        return self.__api_call("getWithdrawAddress", params=__params)
+
+
+    #未测试
+    def zb_get_WithdrawRecord(self, currency, pageIndex = 1, pageSize =10):
+        '''
+        获取数字资产提现记录
+        :param currency:
+        :return:
+        //# Request
+        GET https://trade.zb.com/api/getWithdrawRecord?accesskey=youraccesskey
+        &currency=eth&method=getWithdrawRecord&pageIndex=1&pageSize=10
+            &sign=请求加密签名串&reqTime=当前时间毫秒数
+        //# Response
+        {
+            "code": 1000,
+            "message": {
+                "des": "success",
+                "isSuc": true,
+                "datas": {
+                    "list": [
+                        {
+                            "amount": 0.01,
+                            "fees": 0.001,
+                            "id": 2016042556231,
+                            "manageTime": 1461579340000,
+                            "status": 3,
+                            "submitTime": 1461579288000,
+                            "toAddress": "14fxEPirL9fyfw1i9EF439Pq6gQ5xijUmp"
+                        }...
+                    ],
+                    "pageIndex": 1,
+                    "pageSize": 10,
+                    "totalCount": 4,
+                    "totalPage": 1
+                }
+            }
+        }
+        code : 返回代码
+        message : 提示信息
+        amount : 提现金额
+        fees : 提现手续费
+        id : 提现记录id
+        manageTime : 提现处理的时间的时间戳
+        status :
+        submitTime : 提现发起的时间的时间戳
+        toAddress : 提现的接收地址
+        '''
+        __params =  "accesskey="+self.mykey +\
+            "&currency="+ currency +\
+            "&method=getWithdrawRecord" +\
+            "&pageIndex="+ str(pageIndex)  +\
+            "&pageSize="+ str(pageSize)
+
+        return self.__api_call("getWithdrawRecord", params=__params)
+
+    #未测试
+    def zb_get_ChargeRecord(self, currency, pageIndex = 1, pageSize =10):
+        '''
+        获取数字资产提现记录
+        :param currency:
+        :return:
+        //# Request
+        GET https://trade.zb.com/api/getChargeRecord?accesskey=youraccesskey
+        &currency=btc&method=getChargeRecord&pageIndex=1&pageSize=10
+            &sign=请求加密签名串&reqTime=当前时间毫秒数
+        //# Response
+        {
+            "code": 1000,
+            "message": {
+                "des": "success",
+                "isSuc": true,
+                "datas": {
+                    "list": [
+                        {
+                            "address": "1FKN1DZqCm8HaTujDioRL2Aezdh7Qj7xxx",
+                            "amount": "1.00000000",
+                            "confirmTimes": 1,
+                            "currency": "BTC",
+                            "description": "确认成功",
+                            "hash": "7ce842de187c379abafadd64a5fe66c5c61c8a21fb04edff9532234a1dae6xxx",
+                            "id": 558,
+                            "itransfer": 1,
+                            "status": 2,
+                            "submit_time": "2016-12-07 18:51:57"
+                        }...
+                    ],
+                    "pageIndex": 1,
+                    "pageSize": 10,
+                    "total": 8
+                }
+            }
+        }
+        code : 返回代码
+        message : 提示信息
+        amount : 充值金额
+        confirmTimes : 充值确认次数
+        currency : 充值货币类型(大写)
+        description : 充值记录状态描述
+        hash : 充值交易号
+        id : 充值记录id
+        itransfer : 是否内部转账，1是0否
+        status : 状态(0等待确认，1充值失败，2充值成功)
+        submit_time : 充值时间
+        address : 充值地址
+        '''
+        __params =  "accesskey="+self.mykey +\
+            "&currency="+ currency +\
+            "&method=getChargeRecord" +\
+            "&pageIndex="+ str(pageIndex)  +\
+            "&pageSize="+ str(pageSize)
+
+        return self.__api_call("getChargeRecord", params=__params)
+
+
+    #未测试
+    def zb_get_withdraw(self, currency, amount, receiveAddr,safePwd, pageIndex = 1, pageSize =10):
+        '''
+        获取数字资产提现记录
+        :param currency:
+        amount:提现金额(最多小数点后8位数)
+        receiveAddr:接收地址（必须是认证了的地址，bts的话，以"账户_备注"这样的格式）
+        safePwd: 资金安全密码
+        :return:
+        //# Request
+        GET https://trade.zb.com/api/withdraw?accesskey=youraccesskey&amount=0.0004
+        &currency=etc&fees=0.0003&itransfer=0&method=withdraw
+        &receiveAddr=14fxEPirL9fyfw1i9EF439Pq6gQ5xijUmp&safePwd=资金安全密码
+        &sign=请求加密签名串&reqTime=当前时间毫秒数
+
+        //# Response
+        {
+            "code": 1000,
+            "message": "success",
+            "id": "提现记录id"
+        }
+
+        code : 返回代码
+        message : 提示信息
+        id : 提现记录id
+        '''
+        __params =  "accesskey="+self.mykey +\
+            "&amount=" + str(amount) + \
+            "&currency="+ currency +\
+            "&fees=0"  +\
+            "&itransfer=0" + \
+            "&method=withdraw"   +\
+            "&receiveAddr="+ receiveAddr  +\
+            "&pageIndex="+ str(pageIndex)  +\
+            "&pageSize="+ str(pageSize)  +\
+            "&safePwd="+ safePwd
+
+        return self.__api_call("withdraw", params=__params)
+
+
 if __name__ == '__main__':
 
 
@@ -317,3 +574,4 @@ if __name__ == '__main__':
     print api.zb_get_OrdersNew("eos_usdt", zb_trade_api.TradeType_BUY , pageIndex= 1)
     print api.zb_get_OrdersNew("eos_usdt", zb_trade_api.TradeType_SELL , pageIndex= 1)
     print api.zb_get_OrdersIgnoreTradeType("eos_usdt" , pageIndex= 1)
+    print api.zb_get_UnfinishedOrdersIgnoreTradeType("eos_usdt" , pageIndex= 1, pageSize=10 )

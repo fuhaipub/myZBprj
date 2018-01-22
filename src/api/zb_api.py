@@ -5,6 +5,7 @@ import json
 import yaml
 import sys
 import urllib2
+import zb_error
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -183,6 +184,7 @@ if __name__ == '__main__':
     while True:
         eos = zbapi.zb_get_ticker("eos_usdt")
         import time
+        print eos
         print "Date:%s   买:%.4f  卖:%.4f    最新成交:%.4f     最高位:%.4f      最低位:%.4f    成交量:%.1f " % (
 
                       time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
