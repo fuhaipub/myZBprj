@@ -571,16 +571,9 @@ if __name__ == '__main__':
 
 
     access_key    = 'accesskey'
-    access_secret = 'secretkey'
+    access_secret = 'secretkey'  #永远不要把secretKey写在代码里
 
     api = zb_trade_api(access_key, access_secret)
-
-    #print trade_api.zb_get_account()
-    #print trade_api.zb_get_Order('12313131', "eos_usdt")
-    #print api.zb_get_OrdersNew("eos_usdt", zb_trade_api.TradeType_BUY , pageIndex= 1)
-    #print api.zb_get_OrdersNew("eos_usdt", zb_trade_api.TradeType_BUY , pageIndex= 2)
-    #print api.zb_get_OrdersNew("eos_usdt", zb_trade_api.TradeType_SELL , pageIndex= 1)
-    #print api.zb_get_OrdersNew("eos_usdt", zb_trade_api.TradeType_SELL , pageIndex= 2)
 
     print api.zb_get_OrdersNew("eos_usdt", zb_trade_api.TradeType_BUY , pageIndex= 1)
     print api.zb_get_OrdersNew("eos_usdt", zb_trade_api.TradeType_SELL , pageIndex= 1)

@@ -12,7 +12,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class zb_api:
+class zb_data_api:
     def __init__(self):
         pass
 
@@ -181,13 +181,12 @@ class zb_api:
 
 if __name__ == '__main__':
 
-    zbapi = zb_api()
+    zbapi = zb_data_api()
     #print zbapi.zb_get_market()
     #print zbapi.zb_get_ticker("eos_usdt")
     #print zbapi.zb_get_depth("eos_usdt",3)
     #print zbapi.zb_get_trades("eos_usdt")
     while True:
-
         eos = zbapi.zb_get_ticker("eos_usdt")
         import time
         print eos
@@ -203,28 +202,9 @@ if __name__ == '__main__':
                       float(eos["ticker"]["vol"]) * 6.7
         )
 
-        if float(eos["ticker"]["last"]) * 6.7 < 95 : utils.mac_notify("Eos 交易价格已经小于 95元")
+        price = 120.0
+        if float(eos["ticker"]["last"]) * 6.7 > price : utils.mac_notify("Eos 交易价格已经大于 "+str(float(eos["ticker"]["last"]) * 6.7)+" 元")
 
         time.sleep (2)
 
 
-    """
-    >>> import json
-    >>> js = json.loads('{"haha": "哈哈"}')
-    >>> print json.dumps(js)
-    {"haha": "\u54c8\u54c8"}
-
-    解决办法很简单:
-
-    >>> print json.dumps(js, ensure_ascii=False)
-    {"haha": "哈哈"}
-
-
-
-      eos["ticker"]["buy"] * 6.7,
-      eos["ticker"]["sell"] * 6.7,
-      eos["ticker"]["last"] * 6.7,
-      eos["ticker"]["high"] * 6.7,
-      eos["ticker"]["low"] * 6.7,
-      eos["ticker"]["vol"] * 6.7
-    """
