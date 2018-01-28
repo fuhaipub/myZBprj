@@ -12,7 +12,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class zb_data_api:
+class zb_data_api(object):
     def __init__(self):
         pass
 
@@ -26,6 +26,7 @@ class zb_data_api:
             result   = yaml.safe_load(response.read())
             return result
         except Exception,ex:
+            #return {"date": time.time()*1000 ,"error": "Request zb_api failed, URL:"+url + " Exception:"+ str(ex) }
             return {"error": "Request zb_api failed, URL:"+url + " Exception:"+ str(ex) }
 
 
@@ -193,7 +194,8 @@ if __name__ == '__main__':
         if eos.has_key("ticker") == False : continue
         print "Date:%s   买:%.4f  卖:%.4f    最新成交:%.4f     最高位:%.4f      最低位:%.4f    成交量:%.1f " % (
 
-                      time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
+                      #time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
+                      time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(float(eos["date"])/1000)),
                       float(eos["ticker"]["buy"]) * 6.7,
                       float(eos["ticker"]["sell"]) * 6.7,
                       float(eos["ticker"]["last"]) * 6.7,
@@ -202,7 +204,7 @@ if __name__ == '__main__':
                       float(eos["ticker"]["vol"]) * 6.7
         )
 
-        price = 120.0
+        price = 100.0
         if float(eos["ticker"]["last"]) * 6.7 > price : utils.mac_notify("Eos 交易价格已经大于 "+str(float(eos["ticker"]["last"]) * 6.7)+" 元")
 
         time.sleep (2)
