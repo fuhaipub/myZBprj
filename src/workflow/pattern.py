@@ -2,19 +2,20 @@
 
 
 class Pattern(object):
-    def __init__(self,name ):
-        self.name  = name
-        self.policys = []
+    def __init__(self ):
+        self.policies = []
         self.result= {}
 
     def addPolicy(self,policy):
-        self.policys.append(policy)
+        self.policies.append(policy)
+
+    def clearPolicy(self):
+        self.policies= []
 
     def matching(self, event):
-        print "Enter Pattern ["+self.name+"], event="+ str(event)
-        pass
+        return True
 
     def run(self,event):
-        if self.matching(event) is True:
-            for p in self.policys:
+        if self.matching(event) == True:
+            for p in self.policies:
                 p.do(self.result)

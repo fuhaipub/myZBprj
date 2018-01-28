@@ -20,7 +20,7 @@ class Processor(object):
         self.patterns = []
 
     def do(self, event):
-        print "entter processor["+self.name+"] do()"+ str(event)
+        print "enter processor["+self.name+"] do()"+ str(event)
 
         flag = True
         for filter in self.filterChain:
@@ -28,7 +28,7 @@ class Processor(object):
                 flag = False
                 continue
 
-        if flag is True :
+        if flag == True :
             for p in self.patterns:
                 p.run(event)
 
