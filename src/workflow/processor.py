@@ -4,14 +4,14 @@ import pattern
 class Processor(object):
     def __init__(self, name):
         self.name = name
-        self.filters = []
+        self.filterChain = []
         self.patterns = []
 
     def addFilter(self,filter):
-        self.filters.append(filter)
+        self.filterChain.append(filter)
 
     def clearFilter(self):
-        self.filters=[]
+        self.filterChain=[]
 
     def addPattern(self, p):
         self.patterns.append(p)
@@ -22,7 +22,7 @@ class Processor(object):
     def do(self, event):
 
         flag = True
-        for filter in self.filters:
+        for filter in self.filterChain:
             if filter.filter(event) is False:
                 flag = False
                 continue
