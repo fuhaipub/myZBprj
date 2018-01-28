@@ -20,6 +20,7 @@ class Processor(object):
         self.patterns = []
 
     def do(self, event):
+        print "entter processor["+self.name+"] do()"+ str(event)
 
         flag = True
         for filter in self.filterChain:

@@ -11,6 +11,7 @@ class Pattern(object):
         self.policys.append(policy)
 
     def matching(self, event):
+        print "Enter Pattern ["+self.name+"], event="+ str(event)
         pass
 
     def run(self,event):
