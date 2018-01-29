@@ -17,8 +17,9 @@ class DefaultFilter(Filter):
         pass
 
     def filter(self, event):
-        print "DefaultFilter: 过滤结果中包含 error的事件"
-        if  event.has_key("error") :
+        #print "DefaultFilter: 过滤结果中包含 error的事件"
+        if  event.has_key("error") or not event.has_key("date"):
+            print "Filter(DefaultFilter): discard event=" + str(event)
             return False
         return True
 

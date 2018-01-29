@@ -54,12 +54,12 @@ class TopSellPolicy(Policy):
 
 if __name__ == '__main__':
 
-
     #创建数据源
     ds = wc.getDSManager().createDS("DS_BTS","bts_usdt")
 
-    wc.createWorkflow("workflow_topsell",ds,[DefaultFilter(),TopSellFilter()],TopSellPattern(), TopSellPolicy(), TopSellAction())
+    wc.createWorkflow("workflow_topsell_test",ds,[DefaultFilter(),TopSellFilter()],TopSellPattern(), TopSellPolicy(), TopSellAction())
 
+    wc.createWorkflow("workflow_topsell_abc",ds,[DefaultFilter(),TopSellFilter()],TopSellPattern(), TopSellPolicy(), TopSellAction())
     wc.start()
     time.sleep(10)
     wc.stop()

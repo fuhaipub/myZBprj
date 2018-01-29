@@ -26,7 +26,7 @@ class Processor(object):
         for filter in self.filterChain:
             if filter.filter(event) is False:
                 flag = False
-                continue
+                break
 
         if flag == True :
             for p in self.patterns:
