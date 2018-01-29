@@ -13,9 +13,6 @@ def mac_notify( message, title = "ZB实时交易通知" ):
     call(["osascript", "-e", cmd])
 
 
-
-
-
 # 阿里云短息推送功能
 def send_sms(business_id, phone_number, sign_name, template_code, template_param=None):
     '''
@@ -46,12 +43,6 @@ def send_sms(business_id, phone_number, sign_name, template_code, template_param
     # 发送请求
     smsResponse = acs_client.do_action_with_exception(smsRequest)
     return smsResponse
-
-    #例子:
-    #params = "{\"username\":\"老丁\"}"
-    #print send_sms(__business_id, "18680369080", "丁福海", "SMS_102375068", params)
-    #print send_sms(__business_id, "18680369080", "丁福海", "SMS_102345067", params)
-    #print send_sms(__business_id, "18680369080", "丁福海", "SMS_102375068", params)
 
 
 if __name__ == '__main__':
