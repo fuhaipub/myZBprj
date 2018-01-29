@@ -58,13 +58,3 @@ if __name__ == '__main__':
 
     mac_notify("行情开始大涨,请注意")
 
-    #print send_sms(uuid.uuid1(), "18680369080", "丁福海", "SMS_123797121", params)
-
-    market="EOS"
-    updown="下跌"
-    lastprice=90.0
-
-    msg="zb用户,"+market+updown+"超过"+str(lastprice)
-
-    print "提醒:尊敬的"+msg+"，这是一条测试短信，请忽略。"
-    print send_sms(uuid.uuid1(), "18680369080", "丁福海", "SMS_123797121", '{"name":"'+ msg+'"}')
