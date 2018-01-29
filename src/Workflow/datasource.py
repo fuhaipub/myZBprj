@@ -7,18 +7,58 @@ from src.api.zb_data_api import zb_data_api
 import time, threading
 import sys, os
 import processor
+import yaml
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 class DSManager(object):
-    pass
+    __DSmap = {}
+    __threads ={}
+
+    @classmethod
+    def createDS(cls, dsname, market,filepath=""):
+        ds = Datasource(dsname, market, filepath)
+        cls.__DSmap[dsname] = ds
+        return cls.__DSmap[dsname]
+
+    @classmethod
+    def removeDS(cls,dsname):
+        if cls.__DSmap.has_key(dsname) :
+            del cls.__DSmap[dsname]
+
+    @classmethod
+    def subscribe(cls,dsname, sub_processor):
+        cls.__DSmap[dsname].addSubscriber(sub_processor)
+
+    @classmethod
+    def getDS(cls):
+        return cls.__DSmap
+
+    @classmethod
+    def startWork(cls):
+        for (k, ds) in cls.__DSmap.items() :
+            cls.__threads[k] = threading.Thread(target=ds.run, name='DSThread'+ k)
+            cls.__threads[k].setDaemon(True) #保证父线程退出时,子线程能主动退出
+            cls.__threads[k].start()
+            print "Datasource ["+k+"] start work..."
+
+    @classmethod
+    def stopWork(cls):
+        for (k, ds) in cls.__DSmap.items() :
+            ds.stop()
+            cls.__threads[k].join()
+            print "Datasource ["+k+"] stop work."
+        cls.__threads = []
+
+
 
 
 class Datasource(object):
 
 
-    def __init__(self, market, filePath = ""):
+    def __init__(self, name, market, filePath = ""):
+        self.name = name
         self.describers= []
         self.marketType = market
         self.isRun = False
@@ -36,8 +76,8 @@ class Datasource(object):
         except Exception, ex:
             print "Fail to reload even history, excpetion:"+ str(ex)
 
-    def addDescriber(self,collector):
-        self.describers.append(collector)
+    def addSubscriber(self, processor):
+        self.describers.append(processor)
 
     def __start(self):
         if self.isRun == True:
@@ -60,11 +100,16 @@ class Datasource(object):
                 self.que.append(res)
                 file.writelines(str(res)+"\n")
                 file.flush()
-                #print res
                 time.sleep(1)
         self.t = threading.Thread(target=loop, name='LoopThread'+ self.marketType)
         self.t.setDaemon(True) #保证父进程退出时,子进程能主动退出
         self.t.start()
+
+    def __pop(self):
+        return yaml.safe_load(str(self.que.popleft()).strip()) if len(self.que) > 0 else None
+
+    def __getEvent(self):
+        return self.__pop()
 
     def __join(self):
         self.t.join()
@@ -72,49 +117,28 @@ class Datasource(object):
     def __stop(self):
         self.isRun = False
 
-    def __pop(self):
-        return self.que.popleft() if len(self.que) > 0 else None
-
-    def __getEvent(self):
-        return self.__pop()
-
     def run(self):
             self.__start()
-            while True:
+            self.runflag= True
+            while self.runflag :
 
                 event = self.__getEvent()
-                if event is None:
+                if event is None or event == "":
                     time.sleep(0.05) #每50毫秒调度一次
                     continue
 
-                for describer in self.describers:
+                for p in self.describers:
                     try:
-                        describer.do(event)
+                        p.do(event)
                     except Exception, ex:
                         print "Datasource market="+self.marketType+". Exception:"+str(ex)
-            #self.__join()
+
+    def stop(self):
+        self.runflag = False
+        self.__stop()
+        self.__join()
 
 
 
 if __name__ == '__main__':
-
-    ds_bts = Datasource("eos_usdt")
-    print str(len(ds_bts.que))
-
-    a = processor.Processor("a")
-    b = processor.Processor("b")
-    c = processor.Processor("c")
-    ds_bts.addDescriber(a)
-    ds_bts.addDescriber(b)
-    ds_bts.addDescriber(c)
-
-    ds_bts.run()
-
-    '''
-    print str(len(ds.que))
-    print ds.event_storefile
-
-    ds.start()
-    time.sleep(5)
-    ds.stop()
-    '''
+    pass

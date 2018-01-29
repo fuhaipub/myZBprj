@@ -11,9 +11,6 @@ def mac_notify( message, title = "ZB实时交易通知" ):
 
 
 
-
-
-
 if __name__ == '__main__':
 
-    mac_notify("EOS开始大涨,请注意行情")
+    mac_notify("行情开始大涨,请注意")

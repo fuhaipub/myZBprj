@@ -8,34 +8,34 @@ import time
 from subprocess import call
 
 
+class Employee:
+   '所有员工的基类'
+   empCount = 0
 
+   def __init__(self, name, salary):
+      self.name = name
+      self.salary = salary
+      Employee.empCount += 1
+
+   def __del__(self):
+       class_name = self.__class__.__name__
+       print "class is deleted,name = " + class_name
+
+   def displayCount(self):
+     print "Total Employee %d" % Employee.empCount
+
+   def displayEmployee(self):
+      print "Name : ", self.name,  ", Salary: ", self.salary
 
 
 
 if __name__ == '__main__':
-    cmd = 'display notification \"' + \
-        "Notificaton memo" + '\" with title \"Titile\"'
 
-    call(["osascript", "-e", cmd])
+    e = Employee("ding",800);
+    d = Employee("ding",800);
+    print "Employee.__doc__:", Employee.__doc__
+    print "Employee.__name__:", Employee.__name__
+    print "Employee.__module__:", Employee.__module__
+    print "Employee.__bases__:", Employee.__bases__
+    print "Employee.__dict__:", Employee.__dict__
 
-
-        """
-    >>> import json
-    >>> js = json.loads('{"haha": "哈哈"}')
-    >>> print json.dumps(js)
-    {"haha": "\u54c8\u54c8"}
-
-    解决办法很简单:
-
-    >>> print json.dumps(js, ensure_ascii=False)
-    {"haha": "哈哈"}
-
-
-
-      eos["ticker"]["buy"] * 6.7,
-      eos["ticker"]["sell"] * 6.7,
-      eos["ticker"]["last"] * 6.7,
-      eos["ticker"]["high"] * 6.7,
-      eos["ticker"]["low"] * 6.7,
-      eos["ticker"]["vol"] * 6.7
-    """
